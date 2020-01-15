@@ -6,10 +6,10 @@
           {{ genre.name }}
         </option>
       </select>
-      <button v-on:click="search = true">Find a movie!</button>
+      <button v-on:click="getResult">Find a movie!</button>
     </div>
     <div id="moviecard" v-if="search">
-      <h1>Movie!</h1>
+      <h1>{{ randResult[2].original_title }}</h1>
     </div>
   </div>
 </template>
@@ -29,7 +29,8 @@ export default {
       genres: [],
       populated: false,
       search: false,
-      selected: "28"
+      selected: "28",
+      randResult: ""
     };
   },
   created() {
@@ -41,8 +42,16 @@ export default {
       .then((this.populated = true))
       .then(window.console.log(this.genres));
   },
-  beforeCreate() {
-    window.console.log("I don't exist yet");
+  methods: {
+    getResult: function getResult() {
+      this.search = true;
+      axios
+        .get(
+          "https://api.themoviedb.org/3/discover/movie?api_key=62a61cc56aa5267930dded44f273f098&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" +
+            this.selected
+        )
+        .then(res => (this.randResult = res.data.results));
+    }
   }
 };
 </script>
