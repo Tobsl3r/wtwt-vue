@@ -9,7 +9,11 @@
       <button v-on:click="getResult">Find a movie!</button>
     </div>
     <div id="moviecard" v-if="search">
-      <h1>{{ randResult[2].original_title }}</h1>
+      <h1>{{ randResult.original_title }}</h1>
+      <img
+        :src="'https://image.tmdb.org/t/p/w500' + randResult.poster_path"
+        alt="poster"
+      />
     </div>
   </div>
 </template>
@@ -45,12 +49,13 @@ export default {
   methods: {
     getResult: function getResult() {
       this.search = true;
+      const randNumber = Math.floor(Math.random() * 20);
       axios
         .get(
           "https://api.themoviedb.org/3/discover/movie?api_key=62a61cc56aa5267930dded44f273f098&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" +
             this.selected
         )
-        .then(res => (this.randResult = res.data.results));
+        .then(res => (this.randResult = res.data.results[randNumber]));
     }
   }
 };
