@@ -1,14 +1,25 @@
 <template>
-  <div>
-    <h1>Hello Select</h1>
-    <select v-if="populated">
-      <option v-for="genre in genres" :key="genre.id">
-        {{ genre.name }}
-      </option></select
-    >
+  <div id="main-wrap">
+    <div id="selector">
+      <select v-model="selected">
+        <option v-for="genre in genres" :key="genre.id" v-bind:value="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
+      <button v-on:click="search = true">Find a movie!</button>
+    </div>
+    <div id="moviecard" v-if="search">
+      <h1>Movie!</h1>
+    </div>
   </div>
 </template>
-
+<style scoped>
+#selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+</style>
 <script>
 import axios from "axios";
 export default {
@@ -16,7 +27,9 @@ export default {
   data() {
     return {
       genres: [],
-      populated: false
+      populated: false,
+      search: false,
+      selected: "28"
     };
   },
   created() {
