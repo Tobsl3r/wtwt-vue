@@ -15,7 +15,17 @@
         alt="poster"
       />
       <p>{{ randResult.overview }}</p>
-      <button v-on:click="addToWatchlist">Add this to your Watchlist</button>
+      <button
+        v-on:click="
+          addToWatchlist(
+            randResult.original_title,
+            randResult.id,
+            randResult.poster_path
+          )
+        "
+      >
+        Add this to your Watchlist
+      </button>
     </div>
   </div>
 </template>
@@ -29,6 +39,8 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: auto;
+  margin-right: 2em;
+  margin-left: 2em;
 }
 #moviecard h1 {
   grid-column-start: 2;
@@ -46,6 +58,11 @@
   text-align: left;
   grid-column-start: 4;
   grid-column-end: 7;
+}
+#moviecard button {
+  grid-column-start: 4;
+  grid-column-end: 6;
+  height: 50%;
 }
 </style>
 <script>
@@ -81,8 +98,14 @@ export default {
         )
         .then(res => (this.randResult = res.data.results[randNumber]));
     },
-    addToWatchlist: function addToWatchlist() {
-      window.console.log("yeet");
+    addToWatchlist: function addToWatchlist(name, id, poster_path) {
+      axios
+        .post("https://wtwt-back.herokuapp.com/watchlist", {
+          name: name,
+          id: id,
+          poster_path: poster_path
+        })
+        .catch(err => window.console.log(err));
     }
   }
 };
