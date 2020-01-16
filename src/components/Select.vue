@@ -14,6 +14,8 @@
         :src="'https://image.tmdb.org/t/p/w500' + randResult.poster_path"
         alt="poster"
       />
+      <p>{{ randResult.overview }}</p>
+      <button v-on:click="addToWatchlist">Add this to your Watchlist</button>
     </div>
   </div>
 </template>
@@ -22,6 +24,28 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+#moviecard {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: auto;
+}
+#moviecard h1 {
+  grid-column-start: 2;
+  grid-column-end: 6;
+  grid-row: 1;
+}
+#moviecard img {
+  grid-row-start: 2;
+  grid-row-end: 4;
+  grid-column-start: 1;
+  grid-column-end: 4;
+  max-width: 90%;
+}
+#moviecard p {
+  text-align: left;
+  grid-column-start: 4;
+  grid-column-end: 7;
 }
 </style>
 <script>
@@ -56,6 +80,9 @@ export default {
             this.selected
         )
         .then(res => (this.randResult = res.data.results[randNumber]));
+    },
+    addToWatchlist: function addToWatchlist() {
+      window.console.log("yeet");
     }
   }
 };
